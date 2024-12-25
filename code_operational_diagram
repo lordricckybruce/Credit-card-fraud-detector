@@ -1,0 +1,87 @@
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
+
+    import pandas as pd:
+        This imports the pandas library as pd. pandas is widely used for data manipulation and analysis, specifically handling structured data in the form of dataframes.
+        pd is an alias used to refer to pandas throughout the code.
+
+    from sklearn.model_selection import train_test_split:
+        This imports the train_test_split function from sklearn.model_selection. This function splits your dataset into two parts: one for training the machine learning model and one for testing its performance.
+        It's important to have separate training and testing data to avoid overfitting and ensure the model generalizes well to unseen data.
+
+    from sklearn.ensemble import RandomForestClassifier:
+        This imports the RandomForestClassifier from sklearn.ensemble. RandomForestClassifier is a machine learning algorithm based on an ensemble of decision trees, often used for classification tasks like fraud detection. It combines the output of multiple decision trees to improve accuracy and reduce overfitting.
+
+    from sklearn.metrics import classification_report:
+        This imports the classification_report function from sklearn.metrics. After making predictions, this function is used to evaluate the model's performance based on metrics such as precision, recall, and F1-score.
+
+Loading Data:
+
+data = pd.read_csv('credit_card_data.csv')
+
+    data = pd.read_csv('credit_card_data.csv'):
+        This line loads the dataset from a CSV file called credit_card_data.csv into a pandas dataframe called data.
+        read_csv is a function provided by pandas to read CSV files into dataframes.
+
+Data Preprocessing:
+
+X = data.drop(columns=['fraudulent'])
+y = data['fraudulent']
+
+    X = data.drop(columns=['fraudulent']):
+        This line creates the feature matrix X by dropping the target column ('fraudulent') from the dataset. The features are all the columns except the target, which will be used by the model to make predictions.
+        drop(columns=['fraudulent']) removes the column 'fraudulent' from the dataframe.
+
+    y = data['fraudulent']:
+        This line creates the target vector y, which contains the labels for the data. In this case, the 'fraudulent' column indicates whether a transaction is fraudulent (1) or not (0).
+        y will be used by the machine learning model as the true values to compare against the predicted values.
+
+Splitting Data:
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42):
+        This line splits the data into training and testing sets.
+            X and y are split into X_train (features for training), X_test (features for testing), y_train (labels for training), and y_test (labels for testing).
+            test_size=0.3 means 30% of the data will be used for testing, and 70% will be used for training.
+            random_state=42 ensures the data split is reproducible (i.e., you get the same split every time you run the code).
+
+Model Training:
+
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+    model = RandomForestClassifier(n_estimators=100, random_state=42):
+        This initializes a RandomForestClassifier object. The n_estimators=100 argument specifies that the random forest will use 100 decision trees.
+        random_state=42 ensures reproducibility of the model training process.
+
+    model.fit(X_train, y_train):
+        This trains the random forest model using the training data (X_train and y_train). The .fit() method is used to train the model on the provided features (X_train) and labels (y_train).
+
+Model Prediction:
+
+y_pred = model.predict(X_test)
+
+    y_pred = model.predict(X_test):
+        This line uses the trained model to make predictions on the testing data (X_test).
+        y_pred will contain the predicted labels (fraudulent or not) for each transaction in the test set.
+
+Evaluating Model:
+
+print(classification_report(y_test, y_pred))
+
+    print(classification_report(y_test, y_pred)):
+        This prints the classification report, which includes several metrics to evaluate the model's performance, such as:
+            Precision: The accuracy of the positive predictions (how many predicted fraudulent transactions were actually fraudulent).
+            Recall: The ability of the model to identify all fraudulent transactions (how many actual fraudulent transactions were correctly predicted).
+            F1-score: The harmonic mean of precision and recall, providing a balanced measure of the model’s performance.
+
+Summary of Key Concepts:
+
+    Training the Model: The model learns from the training data (X_train and y_train) how to predict whether a transaction is fraudulent based on patterns in the features.
+    Making Predictions: Once trained, the model uses X_test (test data) to predict whether each transaction is fraudulent or not.
+    Evaluating Performance: The classification_report provides metrics to assess the effectiveness of the model in detecting fraud.
